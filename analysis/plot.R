@@ -13,7 +13,7 @@ data <- read_csv('/Volumes/share/pi/speed-camera/speed-cam.csv',
 # if within 1 second, group together
 data$incident <- cumsum(c(1, diff(data$HMSS)) >= 10)
 
-data %>% 
+data_processed <- data %>% 
   filter(Speed < 30) %>% 
   group_by(Date, incident) %>% 
   summarise(Speed = mean(Speed), 
@@ -22,12 +22,38 @@ data %>%
             Direction = names(which.max(table(Direction)))) %>%
   mutate(Direction = case_when(Direction == 'L2R' ~ 'Westward',
                                TRUE ~ 'Eastward')) %>% 
+  ungroup() 
+
+
+# counts by hour
+data_processed %>% 
+  group_by(Date, Hour) %>% 
+  summarise(Count = n()) %>% 
   ungroup() %>% 
+  ggplot(aes(x=Hour, y=Count)) + 
+  facet_wrap(~Date) +
+  geom_step() +
+  theme_minimal() +
+  ggsci::scale_color_lancet()
+
+# avg speed by hour
+data_processed %>% 
+  group_by(Date, Hour) %>% 
+  summarise(Speed = mean(Speed)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x=Hour, y=Speed)) + 
+  facet_wrap(~Date) +
+  geom_step() +
+  theme_minimal() +
+  ggsci::scale_color_lancet()
+
+# split by dir
+data_processed %>% 
   group_by(Date, Hour, Direction) %>% 
   summarise(Count = n()) %>% 
+  ungroup() %>% 
   ggplot(aes(x=Hour, y=Count, colour = Direction)) + 
   facet_wrap(~Date) +
-  coord_cartesian(ylim=c(0,65)) +
   geom_step() +
   theme_minimal() +
   ggsci::scale_color_lancet()
