@@ -1,5 +1,5 @@
 library(tidyverse)
-
+#library(cowplot)
 data <- read_csv('/Volumes/share/pi/speed-camera/speed-cam.csv', 
                  col_names = c('Date','Hour','Minute','Speed','Unit','Image','Loc1','Loc2','Loc3','Loc4','Loc5','Direction'),
                  col_types = cols(Date = col_date("%Y%m%d"))) %>% 
@@ -26,7 +26,7 @@ data_processed <- data %>%
 
 
 # counts by hour
-data_processed %>% 
+c_by_hour <- data_processed %>% 
   group_by(Date, Hour) %>% 
   summarise(Count = n()) %>% 
   ungroup() %>% 
@@ -37,7 +37,7 @@ data_processed %>%
   ggsci::scale_color_lancet()
 
 # avg speed by hour
-data_processed %>% 
+s_by_hour <- data_processed %>% 
   group_by(Date, Hour) %>% 
   summarise(Speed = mean(Speed)) %>% 
   ungroup() %>% 
@@ -45,10 +45,10 @@ data_processed %>%
   facet_wrap(~Date) +
   geom_step() +
   theme_minimal() +
-  ggsci::scale_color_lancet()
+  ggsci::scale_color_lancet() + ylab('Average Speed (mph)')
 
 # split by dir
-data_processed %>% 
+c_by_hour_split_dir <- data_processed %>% 
   group_by(Date, Hour, Direction) %>% 
   summarise(Count = n()) %>% 
   ungroup() %>% 
@@ -57,3 +57,5 @@ data_processed %>%
   geom_step() +
   theme_minimal() +
   ggsci::scale_color_lancet()
+
+cowplot::plot_grid(c_by_hour_split_dir, s_by_hour, ncol=1)
