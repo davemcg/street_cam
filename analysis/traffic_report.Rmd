@@ -24,12 +24,12 @@ pre {
 ## UP Pineway Traffic Report {.tabset}
 ### Traffic Plot
 ```{r, fig.width=12, fig.height=12, echo=F}
-theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(s_by_hour,
                    c_by_hour_split_dir + theme(legend.position = 'none'),
-                   legend_b,
+                   c_by_day_split_dir + theme(legend.position = 'none'),
                    ncol=3,
-                   rel_widths = c(1,1,0.25))
+                   rel_widths = c(1,1,0.6),
+                   align='h')
 ```
 
 ### Info 
