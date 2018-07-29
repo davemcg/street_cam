@@ -49,7 +49,7 @@ s_by_hour <- data_processed %>%
   geom_step() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  ggsci::scale_color_lancet() + ggtitle('Average Speed (mph)') + 
+  ggsci::scale_color_lancet() + ggtitle('Average Speed (mph) per Hour') + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank())
