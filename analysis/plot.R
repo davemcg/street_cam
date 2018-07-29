@@ -1,6 +1,6 @@
 library(tidyverse)
 #library(cowplot)
-data <- read_csv('/Volumes/share/pi/speed-camera/speed-cam.csv', 
+data <- read_csv('/home/pi/speed-camera/speed-cam.csv', 
                  col_names = c('Date','Hour','Minute','Speed','Unit','Image','Loc1','Loc2','Loc3','Loc4','Loc5','Direction'),
                  col_types = cols(Date = col_date("%Y%m%d"))) %>% 
   rowwise() %>% 
@@ -39,7 +39,8 @@ data_processed <- data %>%
 #   ggsci::scale_color_lancet()
 
 # avg speed by hour
-s_by_hour <- data_processed %>% 
+s_by_hour <- data_processed %>%
+  filter(Date >= (Sys.Date() - 7)) %>% 	
   group_by(Date, Hour) %>% 
   summarise(Speed = mean(Speed)) %>% 
   ungroup() %>% 
@@ -52,6 +53,7 @@ s_by_hour <- data_processed %>%
 
 # split by dir
 c_by_hour_split_dir <- data_processed %>% 
+  filter(Date >= (Sys.Date() - 7)) %>% 
   group_by(Date, Hour, Direction) %>% 
   summarise(Count = n()) %>% 
   ungroup() %>% 
