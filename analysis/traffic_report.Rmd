@@ -9,6 +9,18 @@ output:
 source('/home/pi/git/street_cam/analysis/plot.R')
 ```
 
+<style type="text/css">
+body, td {
+   font-size: 14px;
+}
+code.r{
+  font-size: 20px;
+}
+pre {
+  font-size: 20px
+}
+</style>
+
 ## UP Pineway Traffic Report {.tabset}
 ### Traffic Plot
 ```{r, fig.width=9, fig.height =12, echo=F}
