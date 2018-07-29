@@ -77,15 +77,17 @@ c_by_day_split_dir <- data_processed %>%
   group_by(Date, Direction) %>% 
   summarise(Count = n()) %>% 
   ungroup() %>% 
-  ggplot(aes(x=Direction, y=Count, fill = Direction)) + 
+  ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
+  geom_text(aes(y=Count+100)) +
   theme_minimal() +
-  ggtitle('Count of\nVehicles\nby Day') +
+  ggtitle('Count of\nVehicles\nby Day') + 
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
-        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), 
+        axis.text.y=element_blank())
 
 # grab legend
 #legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
