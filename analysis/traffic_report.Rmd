@@ -22,7 +22,7 @@ pre {
 </style>
 
 ## UP Pineway Traffic Report {.tabset}
-### Traffic Plot
+### Traffic Plots
 ```{r, fig.width=12, fig.height=12, echo=F}
 cowplot::plot_grid(s_by_hour,
                    c_by_hour_split_dir + theme(legend.position = 'none'),
