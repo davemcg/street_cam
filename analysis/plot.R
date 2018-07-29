@@ -67,8 +67,8 @@ c_by_hour_split_dir <- data_processed %>%
 legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
 
 
-cowplot::plot_grid(s_by_hour,
-                   c_by_hour_split_dir + theme(legend.position = 'none'), 
-                   legend_b,
-                   ncol=3,
-                   rel_widths = c(1,1,0.25))
+# cowplot::plot_grid(s_by_hour,
+#                    c_by_hour_split_dir + theme(legend.position = 'none'), 
+#                    legend_b,
+#                    ncol=3,
+#                    rel_widths = c(1,1,0.25))
