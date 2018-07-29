@@ -10,8 +10,8 @@ data <- read_csv('/home/pi/speed-camera/speed-cam.csv',
   mutate(Time = paste0(Hour, Minute)) %>% 
   mutate(Time = as.numeric(Time))
 
-# if within 1 second, group together
-data$incident <- cumsum(c(1, diff(data$HMSS)) >= 10)
+# if within 1.9 second, group together
+data$incident <- cumsum(c(1, diff(data$HMSS)) >= 19)
 
 data_processed <- data %>% 
   filter(Speed < 30) %>% 
