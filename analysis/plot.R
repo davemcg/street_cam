@@ -9,7 +9,7 @@ data <- read_csv('/home/pi/speed-camera/speed-cam.csv',
   filter(!grepl('calib', Image)) %>% 
   mutate(Time = paste0(Hour, Minute)) %>% 
   mutate(Time = as.numeric(Time))
-  
+
 # if within 1 second, group together
 data$incident <- cumsum(c(1, diff(data$HMSS)) >= 10)
 
@@ -48,8 +48,8 @@ s_by_hour <- data_processed %>%
   facet_wrap(~Date, ncol = 1) +
   geom_step() +
   theme_minimal() +
-  xlab('Time') +
-  ggsci::scale_color_lancet() + ylab('Average Speed (mph)') + 
+  xlab('Time') + ylab('') +
+  ggsci::scale_color_lancet() + ggtitle('Average Speed (mph)') + 
   theme(text = element_text(size=16))
 
 # split by dir
@@ -62,17 +62,34 @@ c_by_hour_split_dir <- data_processed %>%
   facet_wrap(~Date, ncol = 1) +
   geom_step() +
   theme_minimal() +
-  ylab('Count of Vehicles by Hour') +
-  xlab('Time') +
+  ggtitle('Count of Vehicles by Hour') +
+  xlab('Time') + ylab('') + 
   ggsci::scale_color_lancet() +
   theme(text = element_text(size=16))
 
+# split by dir, counts per day
+c_by_day_split_dir <- data_processed %>% 
+  filter(Date >= (Sys.Date() - 7)) %>% 
+  group_by(Date, Direction) %>% 
+  summarise(Count = n()) %>% 
+  ungroup() %>% 
+  ggplot(aes(x=Direction, y=Count, fill = Direction)) + 
+  facet_wrap(~Date, ncol = 1) +
+  geom_bar(stat='identity', position = position_dodge(), width=0.2) +
+  theme_minimal() +
+  ggtitle('Count of Vehicles\nby Day') +
+  xlab('Direction') + ylab('') +
+  ggsci::scale_fill_lancet() +
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
 # grab legend
-legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
+#legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
 
 
-# cowplot::plot_grid(s_by_hour,
-#                    c_by_hour_split_dir + theme(legend.position = 'none'), 
-#                    legend_b,
-#                    ncol=3,
-#                    rel_widths = c(1,1,0.25))
+cowplot::plot_grid(s_by_hour,
+                   c_by_hour_split_dir + theme(legend.position = 'none'),
+                   c_by_day_split_dir + theme(legend.position = 'none'),
+                   ncol=3,
+                   rel_widths = c(1,1,0.6),
+                   align='h')

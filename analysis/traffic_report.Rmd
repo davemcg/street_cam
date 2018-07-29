@@ -11,7 +11,7 @@ source('/home/pi/git/street_cam/analysis/plot.R')
 
 <style type="text/css">
 body, td {
-   font-size: 14px;
+   font-size: 18px;
 }
 code.r{
   font-size: 20px;
@@ -23,7 +23,7 @@ pre {
 
 ## UP Pineway Traffic Report {.tabset}
 ### Traffic Plot
-```{r, fig.width=9, fig.height =12, echo=F}
+```{r, fig.width=12, fig.height=12, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(s_by_hour,
                    c_by_hour_split_dir + theme(legend.position = 'none'),
