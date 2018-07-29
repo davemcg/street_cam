@@ -77,7 +77,7 @@ c_by_day_split_dir <- data_processed %>%
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
   theme_minimal() +
-  ggtitle('Count of Vehicles\nby Day') +
+  ggtitle('Count of\nVehicles\nby Day') +
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
