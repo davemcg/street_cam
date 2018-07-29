@@ -7,7 +7,49 @@ output:
 ---
 
 ```{r, include = FALSE}
-source('analysis/plot.R')
+#source('analysis/plot.R')
+
+
+# # counts by hour
+# c_by_hour <- data_processed %>%
+#   group_by(Date, Hour) %>%
+#   summarise(Count = n()) %>%
+#   ungroup() %>%
+#   ggplot(aes(x=Hour, y=Count)) +
+#   facet_wrap(~Date, ncol = 1) +
+#   geom_step() +
+#   theme_minimal() +
+#   ylab('Count of Vehicles by Hour') +
+#   xlab('Time') +
+#   ggsci::scale_color_lancet()
+
+# avg speed by hour
+s_by_hour <- data_processed %>%
+	  group_by(Date, Hour) %>%
+	    summarise(Speed = mean(Speed)) %>%
+	      ungroup() %>%
+	        ggplot(aes(x=Hour, y=Speed)) +
+		  facet_wrap(~Date, ncol = 1) +
+		    geom_step() +
+		      theme_minimal() +
+		        xlab('Time') +
+			  ggsci::scale_color_lancet() + ylab('Average Speed (mph)')
+
+		  # split by dir
+		  c_by_hour_split_dir <- data_processed %>%
+			    group_by(Date, Hour, Direction) %>%
+			      summarise(Count = n()) %>%
+			        ungroup() %>%
+				  ggplot(aes(x=Hour, y=Count, colour = Direction)) +
+				    facet_wrap(~Date, ncol = 1) +
+				      geom_step() +
+				        theme_minimal() +
+					  ylab('Count of Vehicles by Hour') +
+					    xlab('Time') +
+					      ggsci::scale_color_lancet()
+
+				      # grab legend
+				      legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
 ```
 
 ## Daily Traffic Report {.tabset}
