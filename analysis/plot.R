@@ -25,16 +25,18 @@ data_processed <- data %>%
   ungroup() 
 
 
-# counts by hour
-c_by_hour <- data_processed %>% 
-  group_by(Date, Hour) %>% 
-  summarise(Count = n()) %>% 
-  ungroup() %>% 
-  ggplot(aes(x=Hour, y=Count)) + 
-  facet_wrap(~Date) +
-  geom_step() +
-  theme_minimal() +
-  ggsci::scale_color_lancet()
+# # counts by hour
+# c_by_hour <- data_processed %>% 
+#   group_by(Date, Hour) %>% 
+#   summarise(Count = n()) %>% 
+#   ungroup() %>% 
+#   ggplot(aes(x=Hour, y=Count)) + 
+#   facet_wrap(~Date, ncol = 1) +
+#   geom_step() +
+#   theme_minimal() +
+#   ylab('Count of Vehicles by Hour') +
+#   xlab('Time') +
+#   ggsci::scale_color_lancet()
 
 # avg speed by hour
 s_by_hour <- data_processed %>% 
@@ -42,9 +44,10 @@ s_by_hour <- data_processed %>%
   summarise(Speed = mean(Speed)) %>% 
   ungroup() %>% 
   ggplot(aes(x=Hour, y=Speed)) + 
-  facet_wrap(~Date) +
+  facet_wrap(~Date, ncol = 1) +
   geom_step() +
   theme_minimal() +
+  xlab('Time') +
   ggsci::scale_color_lancet() + ylab('Average Speed (mph)')
 
 # split by dir
@@ -53,9 +56,19 @@ c_by_hour_split_dir <- data_processed %>%
   summarise(Count = n()) %>% 
   ungroup() %>% 
   ggplot(aes(x=Hour, y=Count, colour = Direction)) + 
-  facet_wrap(~Date) +
+  facet_wrap(~Date, ncol = 1) +
   geom_step() +
   theme_minimal() +
+  ylab('Count of Vehicles by Hour') +
+  xlab('Time') +
   ggsci::scale_color_lancet()
 
-cowplot::plot_grid(c_by_hour_split_dir, s_by_hour, ncol=1)
+# grab legend
+legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
+
+
+cowplot::plot_grid(s_by_hour,
+                   c_by_hour_split_dir + theme(legend.position = 'none'), 
+                   legend_b,
+                   ncol=3,
+                   rel_widths = c(1,1,0.25))
