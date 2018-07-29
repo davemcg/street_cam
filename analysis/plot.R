@@ -50,6 +50,7 @@ s_by_hour <- data_processed %>%
   theme_minimal() +
   xlab('Time') + ylab('') +
   ggsci::scale_color_lancet() + ggtitle('Average Speed (mph)') + 
+  scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16))
 
 # split by dir
@@ -65,6 +66,7 @@ c_by_hour_split_dir <- data_processed %>%
   ggtitle('Count of Vehicles by Hour') +
   xlab('Time') + ylab('') + 
   ggsci::scale_color_lancet() +
+  scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16))
 
 # split by dir, counts per day
@@ -77,7 +79,7 @@ c_by_day_split_dir <- data_processed %>%
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
   theme_minimal() +
-  ggtitle('Count of\nVehicles\nby Day') +
+  ggtitle('Count of\v nVehicles\nby Day') +
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
