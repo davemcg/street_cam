@@ -49,7 +49,8 @@ s_by_hour <- data_processed %>%
   geom_step() +
   theme_minimal() +
   xlab('Time') +
-  ggsci::scale_color_lancet() + ylab('Average Speed (mph)')
+  ggsci::scale_color_lancet() + ylab('Average Speed (mph)') + 
+  theme(text = element_text(size=16))
 
 # split by dir
 c_by_hour_split_dir <- data_processed %>% 
@@ -63,7 +64,8 @@ c_by_hour_split_dir <- data_processed %>%
   theme_minimal() +
   ylab('Count of Vehicles by Hour') +
   xlab('Time') +
-  ggsci::scale_color_lancet()
+  ggsci::scale_color_lancet() +
+  theme(text = element_text(size=16))
 
 # grab legend
 legend_b <- cowplot::get_legend(c_by_hour_split_dir + theme(legend.position="right"))
