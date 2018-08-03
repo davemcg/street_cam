@@ -44,7 +44,7 @@ s_by_hour <- data_processed %>%
   group_by(Date, Hour) %>% 
   summarise(Speeders = sum(Speed > 25), Speed = mean(Speed)) %>% 
   ungroup() %>% 
-  ggplot(aes(x=Hour, y=Speed, label = Speeders)) + 
+  ggplot(aes(x=Hour + 0.5, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_text(aes(y = Speed + 3, colour = Speeders)) +
   geom_line() +
@@ -62,9 +62,9 @@ c_by_hour_split_dir <- data_processed %>%
   group_by(Date, Hour, Direction) %>% 
   summarise(Count = n()) %>% 
   ungroup() %>% 
-  ggplot(aes(x=Hour, y=Count, colour = Direction)) + 
+  ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_step() +
+  geom_line() +
   theme_minimal() +
   ggtitle('Count of Vehicles by Hour') +
   xlab('Time') + ylab('') + 
@@ -82,7 +82,7 @@ c_by_day_split_dir <- data_processed %>%
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+75)) +
+  geom_text(aes(y=Count+70)) +
   theme_minimal() +
   ggtitle('Count of\nVehicles\nby Day') + 
   xlab('Direction') + ylab('') +
