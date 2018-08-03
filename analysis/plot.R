@@ -80,7 +80,7 @@ c_by_day_split_dir <- data_processed %>%
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+100)) +
+  geom_text(aes(y=Count+75)) +
   theme_minimal() +
   ggtitle('Count of\nVehicles\nby Day') + 
   xlab('Direction') + ylab('') +
