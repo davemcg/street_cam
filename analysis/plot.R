@@ -42,14 +42,15 @@ data_processed <- data %>%
 s_by_hour <- data_processed %>%
   filter(Date >= (Sys.Date() - 7)) %>% 	
   group_by(Date, Hour) %>% 
-  summarise(Speed = mean(Speed)) %>% 
+  summarise(Speeders = sum(Speed > 25), Speed = mean(Speed)) %>% 
   ungroup() %>% 
-  ggplot(aes(x=Hour, y=Speed)) + 
+  ggplot(aes(x=Hour, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_step() +
+  geom_text(aes(y = Speed + 3), colour = 'red') +
+  geom_line() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  ggsci::scale_color_lancet() + ggtitle('Average Speed (mph) per Hour') + 
+  ggsci::scale_color_lancet() + ggtitle('Average Speed (mph) per Hour\nCounts are number of cars\nover 25mph') + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank())
