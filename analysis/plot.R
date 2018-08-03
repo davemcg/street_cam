@@ -54,7 +54,7 @@ s_by_hour <- data_processed %>%
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank()) +
-  guides(fill=FALSE)
+  theme(legend.position="none")
 
 # split by dir
 c_by_hour_split_dir <- data_processed %>% 
