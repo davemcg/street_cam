@@ -46,7 +46,7 @@ s_by_hour <- data_processed %>%
   ungroup() %>% 
   ggplot(aes(x=Hour + 0.5, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_text(aes(y = Speed + 3, colour = Speeders)) +
+  geom_text(aes(y = 1, colour = Speeders)) + 
   geom_line() +
   theme_minimal() +
   xlab('Time') + ylab('') +
@@ -55,6 +55,32 @@ s_by_hour <- data_processed %>%
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank()) +
   theme(legend.position="none")
+
+# counts cars going over 24 per hour and plot numbers
+counts_cars_over_24 <- data_processed %>%
+  filter(Date >= (Sys.Date() - 7)) %>% 	
+  group_by(Date, Hour) %>% 
+  summarise(Speeders = sum(Speed > 24), Speed = mean(Speed)) %>% 
+  ungroup() %>% 
+  ggplot(aes(x=Hour, y=Speed, label = Speeders)) + 
+  facet_wrap(~Date, ncol = 1) +
+  geom_text(aes(y = 1, colour = Speeders)) + 
+  #geom_line() +
+  theme_minimal() +
+  xlab('Time') + ylab('') +
+  scale_color_gradient(low = 'black', high='red') + ggtitle('Number of cars\nover 24 mph by hour')  + 
+  scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
+  theme(text = element_text(size=16),
+        axis.line=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position="none",
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.background=element_blank())
 
 # split by dir
 c_by_hour_split_dir <- data_processed %>% 
@@ -72,6 +98,16 @@ c_by_hour_split_dir <- data_processed %>%
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank())
+
+# busiest hour
+c_by_hour_split_dir_busiest_3_table <- data_processed %>% 
+  group_by(Date, Hour, Direction) %>% 
+  summarise(Count = n()) %>% 
+  ungroup() %>% 
+  spread(Direction, Count) %>% 
+  mutate(Sum = Eastward + Westward) %>% 
+  arrange(-Sum) %>% 
+  top_n(3) %>% tableGrob()
 
 # split by dir, counts per day
 c_by_day_split_dir <- data_processed %>% 
