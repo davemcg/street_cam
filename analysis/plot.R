@@ -46,11 +46,11 @@ s_by_hour <- data_processed %>%
   ungroup() %>% 
   ggplot(aes(x=Hour + 0.5, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_text(aes(y = Speed + 3, colour = Speeders)) +
-  geom_line() +
+  #geom_text(aes(y = Speed + 3, colour = Speeders)) +
+  geom_step() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Speed (mph) per Hour\nCounts are number of cars\nover 25mph')  + 
+  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Speed (mph) per Hour')  + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   theme(text = element_text(size=16),
         panel.grid.minor.x = element_blank()) +
@@ -64,7 +64,7 @@ c_by_hour_split_dir <- data_processed %>%
   ungroup() %>% 
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_line() +
+  geom_step() +
   theme_minimal() +
   ggtitle('Count of Vehicles by Hour') +
   xlab('Time') + ylab('') + 
@@ -82,7 +82,7 @@ c_by_day_split_dir <- data_processed %>%
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+70)) +
+  geom_text(aes(y=Count+60)) +
   theme_minimal() +
   ggtitle('Count of\nVehicles\nby Day') + 
   xlab('Direction') + ylab('') +
