@@ -6,7 +6,7 @@ output:
 ---
 
 ```{r, include = FALSE}
-source('/home/pi/git/street_cam/analysis/plot.R')
+source('~/git/street_cam/analysis/plot.R')
 ```
 
 <style type="text/css">
@@ -23,7 +23,7 @@ pre {
 
 ## UP Pineway Traffic Report {.tabset}
 ### Traffic Plots
-```{r, fig.width=12, fig.height=12, echo=F}
+```{r, fig.width=12, fig.height=10, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(s_by_hour,
                    c_by_hour_split_dir + theme(legend.position = 'none'),
@@ -33,5 +33,30 @@ cowplot::plot_grid(s_by_hour,
                    align='h')
 ```
 
+
+<details>
+<summary>Weekly Speeding Summary</summary>
+```{r, echo = FALSE, fig.width=3.5}
+theme_set(cowplot::theme_cowplot(font_size=16))
+cowplot::plot_grid(counts_cars_over_24)
+```
+</details>
+
+<details>
+<summary>Average Weekday and Weekend</summary>
+```{r, fig.width=12, fig.height=6, echo=F}
+theme_set(cowplot::theme_cowplot(font_size=16))
+cowplot::plot_grid(s_by_hour_weekday,
+                   c_by_hour_split_dir_weekday + theme(legend.position = 'none'),
+                   c_by_day_split_dir_weekday + theme(legend.position = 'none'),
+                   s_by_hour_weekend,
+                   c_by_hour_split_dir_weekend + theme(legend.position = 'none'),
+                   c_by_day_split_dir_weekend + theme(legend.position = 'none'),
+                   align='h',
+                   rel_widths = c(1,1,0.6),
+                   ncol=3)
+```
+</details>
+
 ### Info 
-This data for report is generated from a Raspberry Pi 3b+ with an attached camera. The camera, using the [speed-camera](https://github.com/pageauc/speed-camera) software, constantly monitors the scene and tracks moving objects. Each moving object is logged with the estimated speed and photographed. Objects logged within a second are grouped into one event. The plots are aggregated to display counts of events for each hour and the average speed of all detected objects each hour. While pedestrians can theoretically be captured, it seems the system does not capture many pedestrian events.
+This data for report is generated from a Raspberry Pi 3 B with an attached camera. The camera, using the [speed-camera](https://github.com/pageauc/speed-camera) software, constantly monitors the scene and tracks moving objects. Each moving object is logged with the estimated speed and photographed. Objects logged within a second are grouped into one event. The plots are aggregated to display counts of events for each hour and the average speed of all detected objects each hour. While pedestrians can theoretically be captured, it seems the system does not capture many pedestrian events.
