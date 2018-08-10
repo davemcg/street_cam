@@ -101,7 +101,7 @@ c_by_hour_split_dir <- data_processed %>%
   mutate(Date = paste0(Date, " (", Day, ")")) %>% 
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   facet_wrap(~Date, ncol = 1) +
-  geom_step() +
+  geom_line() +
   theme_minimal() +
   ggtitle('Count of Vehicles by Hour') +
   xlab('Time') + ylab('') + 
@@ -235,7 +235,8 @@ c_by_day_split_dir_weekday <- data_processed %>%
   filter(Weekday == 1) %>% 
   group_by(Date, Direction) %>% 
   summarise(Count = n(),
-            Day = max(Day)) %>% 
+            Day = max(Day)) %>%
+  filter(Count > 250) %>% 
   ungroup() %>% 
   group_by(Direction) %>% 
   summarise(Count = round(mean(Count), digits = 0)) %>% 
@@ -258,6 +259,7 @@ c_by_day_split_dir_weekend <- data_processed %>%
   group_by(Date, Direction) %>% 
   summarise(Count = n(),
             Day = max(Day)) %>% 
+  filter(Count > 250) %>%
   ungroup() %>% 
   group_by(Direction) %>% 
   summarise(Count = round(mean(Count), digits = 0)) %>% 

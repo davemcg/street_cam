@@ -36,7 +36,7 @@ cowplot::plot_grid(s_by_hour,
 
 <details>
 <summary>Weekly Speeding Summary</summary>
-```{r, echo = FALSE, fig.width=3.5}
+```{r, echo = FALSE, fig.width=3.5, fig.height=8}
 theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(counts_cars_over_24)
 ```
