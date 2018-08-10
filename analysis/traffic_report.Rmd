@@ -22,7 +22,7 @@ font-size: 20px
 </style>
 
 ## UP Pineway Traffic Report {.tabset}
-### Weekly Traffic Plots
+### Weekly Traffic
 ```{r, fig.width=12, fig.height=10, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(s_by_hour,
@@ -42,11 +42,11 @@ cowplot::plot_grid(counts_cars_over_24)
 ```
 </details>
 
-### Average Weekday and Weekend Traffic
-```{r, fig.width=12, fig.height=6, echo=F}
+### Average Traffic
+```{r, fig.width=12, fig.height=8, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
-weekday_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekday")
-weekend_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekend")
+weekday_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekday", size = 24, hjust = 0)
+weekend_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekend", size = 24, hjust = 0)
 weekday_plots <- cowplot::plot_grid(
   s_by_hour_weekday,
   c_by_hour_split_dir_weekday + theme(legend.position = 'none'),
@@ -65,7 +65,9 @@ cowplot::plot_grid(weekday_title,
                    weekday_plots,
                    weekend_title,
                    weekend_plots,
-                   ncol=1, align = 'h')
+		   rel_heights = c(0.1,1,0.1,1),
+                   ncol=1, 
+		   align = 'h')
 ```
 
 ### Info 

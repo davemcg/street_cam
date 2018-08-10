@@ -54,7 +54,8 @@ s_by_hour <- data_processed %>%
             Speed = mean(Speed),
             Day = max(Day)) %>% 
   ungroup() %>% 
-  mutate(Date = paste0(Date, " (", Day, ")")) %>% 
+  mutate(Date = paste0(Date, " (", Day, ")"),
+	 Date = factor(Date, levels = rev(levels(factor(Date))))) %>% 
   ggplot(aes(x=Hour + 0.5, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_line() +
@@ -74,7 +75,8 @@ counts_cars_over_24 <- data_processed %>%
             Speed = mean(Speed),
             Day = max(Day)) %>% 
   ungroup() %>% 
-  mutate(Date = paste0(Date, " (", Day, ")")) %>% 
+  mutate(Date = paste0(Date, " (", Day, ")"), 
+	 Date = factor(Date, levels = rev(levels(factor(Date))))) %>% 
   ggplot(aes(x=Hour, y=Speeders, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_line() + 
@@ -98,7 +100,8 @@ c_by_hour_split_dir <- data_processed %>%
   summarise(Count = n(),
             Day = max(Day)) %>% 
   ungroup() %>% 
-  mutate(Date = paste0(Date, " (", Day, ")")) %>% 
+  mutate(Date = paste0(Date, " (", Day, ")"),
+	 Date = factor(Date, levels = rev(levels(factor(Date))))) %>% 
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_line() +
@@ -133,11 +136,13 @@ c_by_day_split_dir <- data_processed %>%
   summarise(Count = n(),
             Day = max(Day)) %>% 
   ungroup() %>% 
-  mutate(Date = paste0(Date, " (", Day, ")")) %>% 
+  mutate(Date = paste0(Date, " (", Day, ")"),
+	Date = factor(Date, levels = rev(levels(factor(Date))))) %>% 
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+50)) +
+  geom_text(aes(y=Count+75)) +
+  scale_y_continuous(expand=c(0,90)) + 
   theme_minimal() +
   ggtitle('Count of\nVehicles\nby Day') + 
   xlab('Direction') + ylab('') +
@@ -179,7 +184,7 @@ s_by_hour_weekend <- data_processed %>%
   geom_line() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Speed\n(mph) per Hour')  + 
+  scale_color_gradient(low = 'black', high='red') + ggtitle('')  + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   coord_cartesian(ylim = c(10,25)) +
   theme(text = element_text(size=16),
@@ -218,7 +223,7 @@ c_by_hour_split_dir_weekend <- data_processed %>%
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   geom_line() +
   theme_minimal() +
-  ggtitle('Average Count of Vehicles\nby Hour') +
+  ggtitle('') +
   xlab('Time') + ylab('') + 
   ggsci::scale_color_lancet() +
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
@@ -236,15 +241,15 @@ c_by_day_split_dir_weekday <- data_processed %>%
   group_by(Date, Direction) %>% 
   summarise(Count = n(),
             Day = max(Day)) %>%
-  filter(Count > 250) %>% 
+  filter(Count > 275) %>% 
   ungroup() %>% 
   group_by(Direction) %>% 
   summarise(Count = round(mean(Count), digits = 0)) %>% 
   ungroup() %>% 
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+50)) +
-  theme_minimal() +
+  geom_text(aes(y=Count+75)) +
+  scale_y_continuous(expand=c(0,90)) + theme_minimal() +
   ggtitle('Average Count of\nVehicles') + 
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
@@ -259,16 +264,17 @@ c_by_day_split_dir_weekend <- data_processed %>%
   group_by(Date, Direction) %>% 
   summarise(Count = n(),
             Day = max(Day)) %>% 
-  filter(Count > 250) %>%
+  filter(Count > 275) %>%
   ungroup() %>% 
   group_by(Direction) %>% 
   summarise(Count = round(mean(Count), digits = 0)) %>% 
   ungroup() %>% 
   ggplot(aes(x=Direction, y=Count, fill = Direction, label=Count)) + 
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
-  geom_text(aes(y=Count+50)) +
+  geom_text(aes(y=Count+75)) +
+  scale_y_continuous(expand=c(0,90)) +  
   theme_minimal() +
-  ggtitle('Average Count of\nVehicles') + 
+  ggtitle('') + 
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
