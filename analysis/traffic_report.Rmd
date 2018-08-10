@@ -11,13 +11,13 @@ source('~/git/street_cam/analysis/plot.R')
 
 <style type="text/css">
 body, td {
-   font-size: 18px;
+font-size: 18px;
 }
 code.r{
-  font-size: 20px;
+font-size: 20px;
 }
 pre {
-  font-size: 20px
+font-size: 20px
 }
 </style>
 
@@ -48,23 +48,24 @@ theme_set(cowplot::theme_cowplot(font_size=16))
 weekday_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekday")
 weekend_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekend")
 weekday_plots <- cowplot::plot_grid(
-		   s_by_hour_weekday,
-                   c_by_hour_split_dir_weekday + theme(legend.position = 'none'),
-                   c_by_day_split_dir_weekday + theme(legend.position = 'none'),
-		   align = 'h',
-		   rel_width = c(1,1,0.6))
+  s_by_hour_weekday,
+  c_by_hour_split_dir_weekday + theme(legend.position = 'none'),
+  c_by_day_split_dir_weekday + theme(legend.position = 'none'),
+  align = 'h',
+  rel_widths = c(1,1,0.6),
+  ncol=3)
 weekend_plots <- cowplot::plot_grid(
-		   s_by_hour_weekend,
-                   c_by_hour_split_dir_weekend + theme(legend.position = 'none'),
-                   c_by_day_split_dir_weekend + theme(legend.position = 'none'),
-                   align='h',
-                   rel_widths = c(1,1,0.6),
-                   ncol=3)
+  s_by_hour_weekend,
+  c_by_hour_split_dir_weekend + theme(legend.position = 'none'),
+  c_by_day_split_dir_weekend + theme(legend.position = 'none'),
+  align='h',
+  rel_widths = c(1,1,0.6),
+  ncol=3)
 cowplot::plot_grid(weekday_title,
-		   weekday_plots,
-		   weekend_title,
-		   weekend_plots,
-		   ncol=1)
+                   weekday_plots,
+                   weekend_title,
+                   weekend_plots,
+                   ncol=1, align = 'h')
 ```
 
 ### Info 

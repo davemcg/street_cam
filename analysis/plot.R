@@ -54,7 +54,7 @@ s_by_hour <- data_processed %>%
             Speed = mean(Speed),
             Day = max(Day)) %>% 
   ungroup() %>% 
-  mutate(Date = paste(Date, " (", Day, ")")) %>% 
+  mutate(Date = paste0(Date, " (", Day, ")")) %>% 
   ggplot(aes(x=Hour + 0.5, y=Speed, label = Speeders)) + 
   facet_wrap(~Date, ncol = 1) +
   geom_line() +
@@ -160,7 +160,7 @@ s_by_hour_weekday <- data_processed %>%
   geom_line() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Weekday Speed\n(mph) per Hour')  + 
+  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Speed\n(mph) per Hour')  + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   coord_cartesian(ylim = c(10,25)) +
   theme(text = element_text(size=16),
@@ -179,7 +179,7 @@ s_by_hour_weekend <- data_processed %>%
   geom_line() +
   theme_minimal() +
   xlab('Time') + ylab('') +
-  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Weekend Speed\n(mph) per Hour')  + 
+  scale_color_gradient(low = 'black', high='red') + ggtitle('Average Speed\n(mph) per Hour')  + 
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
   coord_cartesian(ylim = c(10,25)) +
   theme(text = element_text(size=16),
@@ -199,7 +199,7 @@ c_by_hour_split_dir_weekday <- data_processed %>%
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   geom_line() +
   theme_minimal() +
-  ggtitle('Count of Vehicles\nby Hour (Weekday)') +
+  ggtitle('Average Count of Vehicles\nby Hour') +
   xlab('Time') + ylab('') + 
   ggsci::scale_color_lancet() +
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
@@ -218,7 +218,7 @@ c_by_hour_split_dir_weekend <- data_processed %>%
   ggplot(aes(x=Hour + 0.5, y=Count, colour = Direction)) + 
   geom_line() +
   theme_minimal() +
-  ggtitle('Count of Vehicles\nby Hour (Weekend)') +
+  ggtitle('Average Count of Vehicles\nby Hour') +
   xlab('Time') + ylab('') + 
   ggsci::scale_color_lancet() +
   scale_x_continuous(breaks=c(0,3,6,9,12,15,18,21,24)) + 
@@ -245,7 +245,7 @@ c_by_day_split_dir_weekday <- data_processed %>%
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
   geom_text(aes(y=Count+50)) +
   theme_minimal() +
-  ggtitle('Count of\nVehicles\nby Weekday') + 
+  ggtitle('Average Count of\nVehicles') + 
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
@@ -268,7 +268,7 @@ c_by_day_split_dir_weekend <- data_processed %>%
   geom_bar(stat='identity', position = position_dodge(), width=0.2) +
   geom_text(aes(y=Count+50)) +
   theme_minimal() +
-  ggtitle('Count of\nVehicles\nby Weekend') + 
+  ggtitle('Average Count of\nVehicles') + 
   xlab('Direction') + ylab('') +
   ggsci::scale_fill_lancet() +
   theme(text = element_text(size=16),
