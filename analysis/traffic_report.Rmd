@@ -22,7 +22,7 @@ pre {
 </style>
 
 ## UP Pineway Traffic Report {.tabset}
-### Traffic Plots
+### Weekly Traffic Plots
 ```{r, fig.width=12, fig.height=10, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
 cowplot::plot_grid(s_by_hour,
@@ -42,21 +42,30 @@ cowplot::plot_grid(counts_cars_over_24)
 ```
 </details>
 
-<details>
-<summary>Average Weekday and Weekend</summary>
+### Average Weekday and Weekend Traffic
 ```{r, fig.width=12, fig.height=6, echo=F}
 theme_set(cowplot::theme_cowplot(font_size=16))
-cowplot::plot_grid(s_by_hour_weekday,
+weekday_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekday")
+weekend_title <- cowplot::ggdraw() + cowplot::draw_label("Average Weekend")
+weekday_plots <- cowplot::plot_grid(
+		   s_by_hour_weekday,
                    c_by_hour_split_dir_weekday + theme(legend.position = 'none'),
                    c_by_day_split_dir_weekday + theme(legend.position = 'none'),
-                   s_by_hour_weekend,
+		   align = 'h',
+		   rel_width = c(1,1,0.6))
+weekend_plots <- cowplot::plot_grid(
+		   s_by_hour_weekend,
                    c_by_hour_split_dir_weekend + theme(legend.position = 'none'),
                    c_by_day_split_dir_weekend + theme(legend.position = 'none'),
                    align='h',
                    rel_widths = c(1,1,0.6),
                    ncol=3)
+cowplot::plot_grid(weekday_title,
+		   weekday_plots,
+		   weekend_title,
+		   weekend_plots,
+		   ncol=1)
 ```
-</details>
 
 ### Info 
 This data for report is generated from a Raspberry Pi 3 B with an attached camera. The camera, using the [speed-camera](https://github.com/pageauc/speed-camera) software, constantly monitors the scene and tracks moving objects. Each moving object is logged with the estimated speed and photographed. Objects logged within a second are grouped into one event. The plots are aggregated to display counts of events for each hour and the average speed of all detected objects each hour. While pedestrians can theoretically be captured, it seems the system does not capture many pedestrian events.
